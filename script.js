@@ -52,20 +52,28 @@ function thanks() {
 	var name = document.getElementsByName('Name')[0].value;
 	var email = document.getElementsByName('Email')[0].value;
 	var comments = document.getElementsByName('Comments')[0].value;
-
+  
 	var data = {
-		'Name': name,
-		'Email': email,
-		'Comments': comments
+	  'Name': name,
+	  'Email': email,
+	  'Comments': comments
 	};
-
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'https://script.google.com/macros/s/AKfycbyNGlI_D64V7wLBC-ZB3uyAwDy_awbl98WxtLSG598vMLA5KHpixQ7U4zoBUZ65E0qwow/exec');
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			alert("Thanks for your feedback!");
-		}
-	};
-	xhr.send(JSON.stringify(data));
-}
+  
+	fetch('https://script.google.com/macros/s/AKfycbyNGlI_D64V7wLBC-ZB3uyAwDy_awbl98WxtLSG598vMLA5KHpixQ7U4zoBUZ65E0qwow/exec', {
+	  method: 'POST',
+	  headers: {
+		'Content-Type': 'application/json',
+	  },
+	  body: JSON.stringify(data)
+	})
+	.then(response => {
+	  if (response.ok) {
+		alert("Thanks for your feedback!");
+	  } else {
+		throw new Error('Network response was not ok.');
+	  }
+	})
+	.catch(error => {
+	  console.error('There has been a problem with your fetch operation:', error);
+	});
+  }  
