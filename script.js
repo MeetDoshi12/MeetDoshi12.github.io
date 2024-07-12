@@ -48,35 +48,58 @@ window.onscroll = function() {
 	}
 }
 
+// function thanks() {
+//     var name = document.getElementsByName('Name')[0].value;
+//     var email = document.getElementsByName('Email')[0].value;
+//     var comments = document.getElementsByName('Comments')[0].value;
+
+//     var data = {
+//         'Name': name,
+//         'Email': email,
+//         'Comments': comments
+//     };
+
+//     // Send POST request to Google Apps Script API
+//     fetch('https://script.google.com/macros/s/AKfycbyNGlI_D64V7wLBC-ZB3uyAwDy_awbl98WxtLSG598vMLA5KHpixQ7U4zoBUZ65E0qwow/exec', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(data)
+//     })
+//     .then(response => {
+//         if (response.ok) {
+//             alert("Thanks for your feedback!");
+//         } else {
+//             throw new Error('Network response was not ok');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert("There was an error submitting your feedback. Please try again later.");
+//     });
+// }
+
 function thanks() {
-    var name = document.getElementsByName('Name')[0].value;
-    var email = document.getElementsByName('Email')[0].value;
-    var comments = document.getElementsByName('Comments')[0].value;
-
-    var data = {
-        'Name': name,
-        'Email': email,
-        'Comments': comments
-    };
-
-    // Send POST request to Google Apps Script API
-    fetch('https://script.google.com/macros/s/AKfycbyNGlI_D64V7wLBC-ZB3uyAwDy_awbl98WxtLSG598vMLA5KHpixQ7U4zoBUZ65E0qwow/exec', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Thanks for your feedback!");
-        } else {
-            throw new Error('Network response was not ok');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("There was an error submitting your feedback. Please try again later.");
-    });
-}
+	var name = document.getElementsByName('Name')[0].value;
+	var email = document.getElementsByName('Email')[0].value;
+	var comments = document.getElementsByName('Comments')[0].value;
+  
+	// Prepare data object
+	var data = {
+	  'Name': name,
+	  'Email': email,
+	  'Comments': comments
+	};
+  
+	// Push data to Firebase Realtime Database
+	firebase.database().ref('feedbacks').push(data)
+	  .then(function() {
+		alert("Thanks for your feedback!");
+	  })
+	  .catch(function(error) {
+		console.error("Error saving feedback: ", error);
+		alert("Error submitting feedback. Please try again later.");
+	  });
+  }  
  
